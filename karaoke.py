@@ -6,7 +6,6 @@ from xml.sax.handler import ContentHandler
 
 import sys
 import smallsmilhandler
-import os 
 
 comandos = sys.argv
 
