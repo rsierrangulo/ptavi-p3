@@ -10,7 +10,8 @@ import smallsmilhandler
 comandos = sys.argv
 
 if __name__ == "__main__":
-    try:
+    if len(sys.argv) != 2:
+        sys.exit('Usage: python karaoke.py file.smil')
         parser = make_parser()
         cHandler = smallsmilhandler.SmallSMILHandler()
         parser.setContentHandler(cHandler)
@@ -24,5 +25,4 @@ if __name__ == "__main__":
             for atributos in diccionario.keys():
                 elementos = elementos + atributos + '=' + '"' + linea[1][atributos] + '"' + '\t'
             print elementos
-    except:
-        print 'Usage: python karaoke.py file.smil'
+
