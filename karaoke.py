@@ -8,29 +8,51 @@ import sys
 import smallsmilhandler
 import os
 
-comandos = sys.argv
+
+class KaraokeLocal(smallsmilhandler.SmallSMILHandler):
+
+    def __init__(self):
+        comandos = sys.argv
+        fichero = comandos[1]
+        parser = make_parser()
+        cHandler = smallsmilhandler.SmallSMILHandler()
+        parser.setContentHandler(cHandler)
+        parser.parse(open(fichero))
+        self.lista = cHandler.get_tags()
+
+    def __str__(self):
+        lista_str = ''
+        for linea in self.lista:
+            etiquetas = linea[0] + '\t'
+            elementos = ''
+            diccionario = linea[1]
+            for atributos in diccionario.keys():
+                valor = diccionario[atributos]
+                if valor != '':
+                    elementos = elementos + atributos
+                    elementos += '=' + '"' + valor + '"' + '\t'
+            lista_str += etiquetas + elementos + "\n"
+        return lista_str
+
+    def do_local(self):
+        for linea in self.lista:
+            etiquetas = linea[0] + '\t'
+            elementos = ''
+            diccionario = linea[1]
+            for atributos in diccionario.keys():
+                valor = diccionario[atributos]
+                if valor != '':
+                    nuevo_recurso = valor.split('/')
+                    if nuevo_recurso[0] == 'http:':
+                        os.system("wget -q " + valor)
+                        valor = nuevo_recurso[-1]
 
 if __name__ == "__main__":
+
     if len(sys.argv) != 2:
         sys.exit('Usage: python karaoke.py file.smil')
 
-    parser = make_parser()
-    cHandler = smallsmilhandler.SmallSMILHandler()
-    parser.setContentHandler(cHandler)
-    parser.parse(open(comandos[1]))
-    lista = cHandler.get_tags()
-    for linea in lista:
-        etiqueta = linea[0]
-        print etiqueta + '\t',
-        x = ''
-        diccionario = linea[1]
-        for atributos in diccionario.keys():
-            valor = diccionario[atributos]
-            if valor != '':
-                if atributos == 'src' and valor[0] == 'h':
-                    recurso = valor
-                    nuevo_recurso = recurso.split('/')
-                    valor = nuevo_recurso[-1]
-                    os.system("wget -q " + recurso)
-                x = x + atributos + '=' + '"' + valor + '"' + '\t'
-        print x
+    karaoke = KaraokeLocal()
+    print karaoke.__str__()
+    karaoke.do_local()
+    print karaoke.__str__()
