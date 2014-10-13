@@ -45,7 +45,7 @@ class KaraokeLocal(smallsmilhandler.SmallSMILHandler):
                     nuevo_recurso = valor.split('/')
                     if nuevo_recurso[0] == 'http:':
                         os.system("wget -q " + valor)
-                        valor = nuevo_recurso[-1]
+                        diccionario[atributos] = nuevo_recurso[-1]
 
 if __name__ == "__main__":
 
