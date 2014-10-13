@@ -22,15 +22,15 @@ if __name__ == "__main__":
     for linea in lista:
         etiqueta = linea[0]
         print etiqueta + '\t',
-        elementos = ''
+        x = ''
         diccionario = linea[1]
         for atributos in diccionario.keys():
-            if diccionario[atributos] != '':
-                if atributos == 'src' and diccionario[atributos][0] == 'h':
-                    recurso = diccionario[atributos]
+            valor = diccionario[atributos]
+            if valor != '':
+                if atributos == 'src' and valor[0] == 'h':
+                    recurso = valor
                     nuevo_recurso = recurso.split('/')
-                    diccionario[atributos] = nuevo_recurso[-1]
+                    valor = nuevo_recurso[-1]
                     os.system("wget -q " + recurso)
-                elementos = elementos + atributos + '=' + '"'
-                + diccionario[atributos] + '"' + '\t'
-        print elementos
+                x = x + atributos + '=' + '"' + valor + '"' + '\t'
+        print x
