@@ -25,11 +25,12 @@ if __name__ == "__main__":
         elementos = ''
         diccionario = linea[1]
         for atributos in diccionario.keys():
-            if diccionario[atributos] != '':  
+            if diccionario[atributos] != '':
                 if atributos == 'src' and diccionario[atributos][0] == 'h':
                     recurso = diccionario[atributos]
                     nuevo_recurso = recurso.split('/')
                     diccionario[atributos] = nuevo_recurso[-1]
                     os.system("wget -q " + recurso)
-                elementos = elementos + atributos + '=' + '"' + diccionario[atributos] + '"' + '\t'
+                elementos = elementos + atributos + '=' + '"'
+                + diccionario[atributos] + '"' + '\t'
         print elementos
